@@ -1,25 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
-function App() {
-
-  useEffect(() => {
-    document.title = 'MERN Calendar'
-  }, []);
-
-  return (
-    <div className="wrapper">
-      {/* <Navbar /> */}
-      <div class="main">
-        <div class="main-content">
-          <Routes>
-            {/* <Route path="/" element={<Home/>} /> */}
-          </Routes>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export default App;
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="*" element={ <App /> } />
+      </Routes>
+    </BrowserRouter>
+  </React.StrictMode>
+);
