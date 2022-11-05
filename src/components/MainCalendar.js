@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Calendar from 'node-calendar';
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
+
 
 export default function MainCalendar() {
 
@@ -66,46 +68,56 @@ export default function MainCalendar() {
 
   return (
     <div className="col-span-9">
-      <div className="grid grid-cols-7 gap-x-2 gap-y-2">{selectDate.y}
-        <div className="flex">
-          <select value={selectDate.m} onChange={ (e) => setSelectDate({ ...selectDate, 'm': e.target.value }) }>
+      <div className="flex justify-end mb-3">
+        <div className="flex border rounded-xl mx-1">
+          <select className="text-center font-bold rounded-lg bg-transparent hover:bg-gray-200 px-4" value={selectDate.m} onChange={ (e) => setSelectDate({ ...selectDate, 'm': e.target.value }) }>
             { [...Array(12)].map((x, i) => (
               <option key={i} value={i}>{Calendar.month_name[i + 1]}</option>
             ))}
           </select>
-          <div className="flex flex-col">
-            <button className="flex-auto bg-blue-400 rounded m-1 p-1" onClick={() => (selectDate.m < 11 ? setSelectDate({ ...selectDate, 'm': parseInt(selectDate.m) + 1 }) : false)}>U</button>
-            <button className="flex-auto bg-blue-400 rounded m-1 p-1" onClick={() => (selectDate.m > 0 ? setSelectDate({ ...selectDate, 'm': parseInt(selectDate.m) - 1 }) : false)}>D</button>
+          <div className="flex flex-col p-1">
+            <button className="flex-auto hover:bg-gray-200 rounded-lg cursor-pointer w-6" onClick={() => (selectDate.m < 11 ? setSelectDate({ ...selectDate, 'm': parseInt(selectDate.m) + 1 }) : false)}>
+              <ChevronUpIcon/>
+            </button>
+            <button className="flex-auto hover:bg-gray-200 rounded-lg cursor-pointer w-6" onClick={() => (selectDate.m > 0 ? setSelectDate({ ...selectDate, 'm': parseInt(selectDate.m) - 1 }) : false)}>
+              <ChevronDownIcon/>
+            </button>
           </div>
         </div>
-        <div className="flex">
-          <select value={selectDate.y} onChange={ (e) => setSelectDate({ ...selectDate, 'y': e.target.value }) }>
+        <div className="flex border rounded-xl mx-1">
+          <select className="text-center font-bold rounded-lg bg-transparent hover:bg-gray-200 px-4" value={selectDate.y} onChange={ (e) => setSelectDate({ ...selectDate, 'y': e.target.value }) }>
             { yearSelection.map((x, i) => (
               <option key={i} value={x}>{x}</option>
             ))}
           </select>
-          <div className="flex flex-col">
-            <button className="flex-auto bg-blue-400 rounded m-1 p-1" onClick={() => (selectDate.y < ulYear ? setSelectDate({ ...selectDate, 'y': parseInt(selectDate.y) + 1 }) : false)}>U</button>
-            <button className="flex-auto bg-blue-400 rounded m-1 p-1" onClick={() => (selectDate.y > llYear ? setSelectDate({ ...selectDate, 'y': parseInt(selectDate.y) - 1 }) : false)}>D</button>
+          <div className="flex flex-col p-1">
+            <button className="flex-auto hover:bg-gray-200 rounded-lg cursor-pointer w-6" onClick={() => (selectDate.y < ulYear ? setSelectDate({ ...selectDate, 'y': parseInt(selectDate.y) + 1 }) : false)}>
+              <ChevronUpIcon/>
+            </button>
+            <button className="flex-auto hover:bg-gray-200 rounded-lg cursor-pointer w-6" onClick={() => (selectDate.y > llYear ? setSelectDate({ ...selectDate, 'y': parseInt(selectDate.y) - 1 }) : false)}>
+              <ChevronDownIcon/>
+            </button>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-7 gap-x-2 gap-y-2">
-        <div className="text-center mb-4 border-b-2 border-red-300">Sun</div>
-        <div className="text-center mb-4 border-b-2">Mon</div>
-        <div className="text-center mb-4 border-b-2">Tue</div>
-        <div className="text-center mb-4 border-b-2">Wed</div>
-        <div className="text-center mb-4 border-b-2">Thu</div>
-        <div className="text-center mb-4 border-b-2">Fri</div>
-        <div className="text-center mb-4 border-b-2 border-red-300">Sat</div>
+        <div className="text-center pb-1 pt-2 mb-4 hover:bg-gray-100 border-b-2 border-red-400 text-red-400">Sun</div>
+        <div className="text-center pb-1 pt-2 mb-4 hover:bg-gray-100 border-b-2">Mon</div>
+        <div className="text-center pb-1 pt-2 mb-4 hover:bg-gray-100 border-b-2">Tue</div>
+        <div className="text-center pb-1 pt-2 mb-4 hover:bg-gray-100 border-b-2">Wed</div>
+        <div className="text-center pb-1 pt-2 mb-4 hover:bg-gray-100 border-b-2">Thu</div>
+        <div className="text-center pb-1 pt-2 mb-4 hover:bg-gray-100 border-b-2">Fri</div>
+        <div className="text-center pb-1 pt-2 mb-4 hover:bg-gray-100 border-b-2 border-red-400 text-red-400">Sat</div>
         { [...Array(dates.totCalTiles)].map((x, i) => (
           (i > dates.cmStartDay && (i - dates.cmStartDay) <= dates.cmDays) ? (
-            <div key={'cTile' + i} className="rounded text-end shadow-inner p-1 shadow-md font-bold 
+            <div key={'cTile' + i} className="rounded text-end shadow-inner p-1 shadow-md 
               hover:border-t-4 hover:border-l-2 border-t-0 border-l-0 
               border-b-4 border-r-2 hover:border-b-0 hover:border-r-0 
               bg-gray-100 border-gray-300 
               hover:bg-gray-100 hover:border-gray-0">
-              {i - dates.cmStartDay}
+              <span className={'font-bold ' + ((i + 1) % 7 == 0 || (i + 1) % 7 == 1 ? 'text-red-400' : '') }>
+                {i - dates.cmStartDay}
+              </span>
             </div>
           ) : (
             <div key={'cTile' + i} className="rounded text-end shadow-inner p-1 shadow-md font-bold 
